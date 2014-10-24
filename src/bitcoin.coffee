@@ -8,21 +8,22 @@
 #   None
 #
 # Commands:
-#   hubot bitcoin price (in) <currency>
+#   hubot bitcoin                            returns price in usd
+#   hubot bitcoin gbp                        returns price in gbp
+#   hubot bitcoin price in eur              returns price in eur
 #
 # Author:
 #   Fred Wu
+#   Peter Tripp <petertripp@gmail.com>
 
 cheerio = require('cheerio')
 
 module.exports = (robot) ->
-  robot.respond /bitcoin price\s(in\s)?(.*)/i, (msg) ->
-    currency = msg.match[2].trim().toUpperCase()
+  robot.respond /bitcoin(?:\s)?(?:price\s)?(?:in\s)?(.*)?/i, (msg) ->
+    currency = if (msg.match[1]) then msg.match[1].trim().toUpperCase() else 'USD'
     bitcoinPrice(msg, currency)
 
 bitcoinPrice = (msg, currency) ->
-  msg
-    .send "Looking up... sit tight..."
   msg
     .http("http://bitcoinprices.com/")
     .get() (err, res, body) ->
