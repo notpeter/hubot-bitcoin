@@ -5,9 +5,9 @@
 #   None
 #
 # Commands:
-#   hubot bitcoin                            returns price in usd
-#   hubot bitcoin gbp                        returns price in gbp
-#   hubot bitcoin price in eur              returns price in eur
+#   hubot bitcoin                            - returns price in usd
+#   hubot bitcoin list                       - returns list of available currencies
+#   hubot bitcoin gbp                        - returns price in gbp
 #
 # Author:
 #   Fred Wu
@@ -25,7 +25,10 @@ bitcoinPrice = (msg, currency) ->
       msg.send "#{getPrice(currency, body)}"
 
 getPrice = (currency, body) ->
-  if val = JSON.parse(body)[currency]
+  values = JSON.parse(body)
+  if currency == 'LIST'
+    "Available currencies: " + ((k for k of values).filter (c) -> c isnt 'timestamp').join(' ')
+  else if val = values[currency]
     "#{currency}: #{val.last} (H: #{val.ask} | L: #{val.bid})"
   else
     "Can't find the price for #{currency}. :("
