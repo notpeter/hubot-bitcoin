@@ -4,9 +4,9 @@ A [Hubot](https://github.com/github/hubot) plugin to tell you the current price 
 
 ### Usage
 
-#   hubot bitcoin                            returns price in usd
-#   hubot bitcoin list                       returns list of available currencies
-#   hubot bitcoin [price] [in] eur           returns price in eur
+   hubot bitcoin                            returns price in usd
+   hubot bitcoin list                       returns list of available currencies
+   hubot bitcoin [price] [in] eur           returns price in eur
 
 ### Installation
 1. cd into your hubot dir, run `npm install --save hubot-bitcoin` (adds it as a dependency in package.json).
