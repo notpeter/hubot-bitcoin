@@ -1,9 +1,6 @@
 # Description:
 #   Find the latest Bitcoin price in specified currency
 #
-# Dependencies:
-#   "cheerio": ""
-#
 # Configuration:
 #   None
 #
@@ -16,8 +13,6 @@
 #   Fred Wu
 #   Peter Tripp <petertripp@gmail.com>
 
-cheerio = require('cheerio')
-
 module.exports = (robot) ->
   robot.respond /bitcoin(?:\s)?(?:price\s)?(?:in\s)?(.*)?/i, (msg) ->
     currency = if (msg.match[1]) then msg.match[1].trim().toUpperCase() else 'USD'
@@ -25,27 +20,12 @@ module.exports = (robot) ->
 
 bitcoinPrice = (msg, currency) ->
   msg
-    .http("http://bitcoinprices.com/")
+    .http("https://api.bitcoinaverage.com/ticker/all")
     .get() (err, res, body) ->
       msg.send "#{getPrice(currency, body)}"
 
 getPrice = (currency, body) ->
-  $ = cheerio.load(body)
-
-  lastPrice   = null
-  highPrice   = null
-  lowPrice    = null
-  priceSymbol = null
-
-  $('table.currencies td.symbol').each (i) ->
-    if $(this).text() == currency
-      priceSymbol = $(this).next().next().next().next().next().next().text()
-      lastPrice = "#{priceSymbol}#{$(this).next().next().next().next().next().text()}"
-      highPrice = "#{priceSymbol}#{$(this).next().next().next().text()}"
-      lowPrice  = "#{priceSymbol}#{$(this).next().next().next().next().text()}"
-      false
-
-  if lastPrice == null
-    "Can't find the price for #{currency}. :("
+  if val = JSON.parse(body)[currency]
+    "#{currency}: #{val.last} (H: #{val.ask} | L: #{val.bid})"
   else
-    "#{currency}: #{lastPrice} (H: #{highPrice} | L: #{lowPrice})"
+    "Can't find the price for #{currency}. :("

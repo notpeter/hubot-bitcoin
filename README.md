@@ -12,3 +12,5 @@ A [Hubot](https://github.com/github/hubot) plugin to tell you the current price 
 1. cd into your hubot dir, run `npm install --save hubot-bitcoin` (adds it as a dependency in package.json).
 2. Add `"hubot-bitcoin"` to your `external-scripts.json` file.
 3. Restart Hubot.
+
+Or just drop bitcoin.coffee into your hubot's scripts/ directory.
